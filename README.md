@@ -316,6 +316,120 @@ h3 {
 
 
 
+### 7. 处理静态资源（图片，字体，音视频等）
+
+1. 下载 `url-loader` 和 `file-loader` ：`npm i file-loader url-loader -D`
+
+2. 修改配置 `config/webpack.config.js`
+
+   ```
+   module.exports = {
+   		module: {
+   				rules: [
+   						...
+   						{
+                   test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                   use: [
+                       {
+                           loader: "url-loader",
+                           options: {
+                           		// 此处注意：需要配置为esModule，否则路径是对象格式
+                               esModule: false,
+                               limit: 8092,
+                               name: "img/[hash:7].[ext]"
+                           }
+                       }
+                   ]
+               },
+               {
+                   test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+                   use: [
+                       {
+                           loader: "url-loader",
+                           options: {
+                           		// 此处注意：需要配置为esModule，否则路径是对象格式
+                               esModule: false,
+                               limit: 8092,
+                               name: "media/[hash:7].[ext]"
+                           }
+                       }
+                   ]
+               },
+               {
+                   test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                   use: [
+                       {
+                           loader: "url-loader",
+                           options: {
+                           		// 此处注意：需要配置为esModule，否则路径是对象格式
+                               esModule: false,
+                               limit: 8092,
+                               name: "font/[hash:7].[ext]"
+                           }
+                       }
+                   ]
+               }
+   						...
+   				]
+   		}
+   }
+   ```
+
+3. 查找图片字体资源，放在 `assets/images` 和 `assets/fonts` 目录下
+
+4. 修改 `app.vue`
+
+   引入图片资源：
+
+   ```
+   <template>
+       <div>
+           ...
+           <img src="./assets/images/baidu.png" alt />
+   				<img src="./assets/images/pikaqiu.jpg" alt />
+           ...
+       </div>
+   </template>
+   ```
+
+   
+
+   引入字体：
+
+   ```
+   <template>
+       <div>
+           ...
+           <span class="iconfont icon-bofang"></span>
+           <span class="iconfont icon-qian"></span>
+           <span class="iconfont icon-ziyuan"></span>
+           ...
+       </div>
+   </template>
+   
+   <style lang="scss">
+   @import './assets/fonts/iconfont.css';
+   
+   ...
+   </style>
+   ```
+
+5. 执行 `npm run build` ， 在浏览器查看结果
+
+   ![](./images/url-01.png)
+
+   根据 `config/webpack.config.js` 的配置，如果图片大小小于 8092字节，则被 `url-loader` 转为 `base64`编码格式的图片。如果图片大小大于 8092字节，则被 `url-loader` 重命名 `/img/[hash:7].[ext]`。
+
+   上图中，百度Logo是 7877 字节，皮卡丘是 20 kb，也就能解释上图现象
+
+   
+
+   ![](./images/url-02.png)
+
+   字体的 `eot` 是2kb，也被转为 `base64` 格式。
+
+   
+
 ## 2. 注意
 
 1. 新建 `.gitignore` 文件，忽略相关文件或者目录
@@ -337,3 +451,4 @@ h3 {
 4. `["style-loader", "css-loader"]` 什么作用，顺序能反吗？
 5. `sass-loader` 和 `node-sass` 作用是什么？
 6. 经常遇到`node-sass` 下载安装失败，有解决方法？
+7. `url-loader` 和 `file-loader` 的区别？配置中为什么没有 `file-loader` 的配置？

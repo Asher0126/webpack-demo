@@ -22,6 +22,45 @@ module.exports = {
                     },
                     "sass-loader"
                 ]
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                use: [
+                    {
+                        loader: "url-loader",
+                        options: {
+                            esModule: false,
+                            limit: 8092,
+                            name: "img/[hash:7].[ext]"
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+                use: [
+                    {
+                        loader: "url-loader",
+                        options: {
+                            esModule: false,
+                            limit: 8092,
+                            name: "media/[hash:7].[ext]"
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                use: [
+                    {
+                        loader: "url-loader",
+                        options: {
+                            esModule: false,
+                            limit: 8092,
+                            name: "font/[hash:7].[ext]"
+                        }
+                    }
+                ]
             }
         ]
     },
