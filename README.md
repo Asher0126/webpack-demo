@@ -110,6 +110,8 @@ h3 {
 
 原因很简单：目前我们还没有配置解析 `CSS` 的 `loader`。
 
+![](./images/css-loader.png)
+
 
 
 ### 3. 解析CSS
@@ -128,6 +130,70 @@ h3 {
 3. 执行 `npm run build`，不会报错。
 
    查看 `dist` 目录，会看到类似 `(t=n(3)(!1)).push([e.i,"\nh3 {\n    color: red;\n}\n",""])` 的代码，表示解析CSS成功。
+
+
+
+### 4. 在浏览器呈现我们的成果
+
+1. 下载 `vue` : `npm i vue`
+
+2. 下载 `html-webpack-plugin`： `npm i html-webpack-plugin -D`
+
+3. 修改 `src/index.js`
+
+   ```
+   // console.log('Hello Webpack');
+   import Vue from 'vue';
+   import App from './app.vue';
+   
+   // console.log(App);
+   new Vue({
+       el: '#app',
+       render: h => h(App)
+   })
+   ```
+
+4. 新增 `public/index.html`
+
+   ```
+   <!DOCTYPE html>
+   <html lang="en">
+   
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <meta http-equiv="X-UA-Compatible" content="ie=edge">
+       <title><%= htmlWebpackPlugin.options.title %></title>
+   </head>
+   
+   <body>
+       <div id="app"></div>
+   </body>
+   
+   </html>
+   ```
+
+5. 修改 `config/webpack.config.js`
+
+   ```
+   const HtmlWebpackPlugin = require("html-webpack-plugin");
+   
+   module.exports = {
+   		...
+       plugins: [
+           ...
+           new HtmlWebpackPlugin({
+               template: "./public/index.html",
+               title: "Hello Webpack"
+           })
+       ]
+       ...
+   }
+   ```
+
+6. 执行 `npm run build`，此时不需要查看源码，直接将构建之后的 `index.html` 放在浏览器访问
+
+![](./images/hello webpack.png)
 
 
 

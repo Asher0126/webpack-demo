@@ -20,11 +20,15 @@
     "homepage": "https://github.com/Modeest/webpack-demo#readme",
     "devDependencies": {
         "css-loader": "^3.4.0",
+        "html-webpack-plugin": "^3.2.0",
         "style-loader": "^1.0.2",
         "vue-loader": "^15.8.3",
         "vue-template-compiler": "^2.6.11",
         "webpack": "^4.41.3",
         "webpack-cli": "^3.3.10",
         "webpack-dev-server": "^3.9.0"
+    },
+    "dependencies": {
+        "vue": "^2.6.11"
     }
 }
