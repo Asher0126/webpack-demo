@@ -36,6 +36,52 @@
 
 
 
+### 2. 解析 Vue 文件
+
+1. 安装 `vue-loader` 和 `vue-template-compiler` ： `npm i vue-loader vue-template-compiler -D`
+
+2. 修改配置 `config/webpack.config.js`
+
+   ```
+   const VueLoaderPlugin = require("vue-loader/lib/plugin");
+   
+   module.exports = {
+       entry: './src/index.js',
+       module: {
+           rules: [
+               {
+                   test: /\.vue$/,
+                   loader: 'vue-loader'
+               }
+           ]
+       },
+       plugins: [
+           new VueLoaderPlugin()
+       ]
+   }
+   ```
+
+3. 新建 `src/app.vue`
+
+   ```
+   <template>
+       <h3>Hello Webpack</h3>
+   </template>
+   ```
+
+4. 修改 `src/index.js`
+
+   ```
+   // console.log('Hello Webpack');
+   import App from './app.vue';
+   
+   console.log(App);
+   ```
+
+5. 执行 `npm run build`，查看 `dist` 目录的 `main.js`，能看到 `("h3",[this._v("Hello Webpack")])`等代码，表示 `vue` 文件解析成功。
+
+
+
 ## 2. 注意
 
 1. 新建 `.gitignore` 文件，忽略相关文件或者目录
@@ -53,3 +99,4 @@
 
 1. `package.json` 文件执行 `webpack` 命令为什么能成功，直接执行是否可以，执行流程是怎样的？
 2. 为什么将 `node_modules` ， `dist`， `package-lock.json` 加入到 `.gitignore` 中？
+3. `vue-loader` 和 `vue-template-compiler` 有什么作用？
