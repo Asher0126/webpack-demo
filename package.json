@@ -1,0 +1,26 @@
+{
+    "name": "webpack-demo",
+    "version": "1.0.0",
+    "description": "从0开始配置webpack",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "webpack --config config/webpack.config.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Modeest/webpack-demo.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Modeest/webpack-demo/issues"
+    },
+    "homepage": "https://github.com/Modeest/webpack-demo#readme",
+    "devDependencies": {
+        "webpack": "^4.41.3",
+        "webpack-cli": "^3.3.10",
+        "webpack-dev-server": "^3.9.0"
+    }
+}
