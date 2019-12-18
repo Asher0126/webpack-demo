@@ -230,6 +230,92 @@ h3 {
 
 
 
+### 6. 处理CSS衍生的问题
+
+1. 下载 `postcss` ： `npm i postcss-loader postcss-preset-env -D `
+
+2. 修改配置 `config/webpack.config.js`
+
+   ```
+   modules.exports = {
+   		...
+   		module: {
+   				rules: [
+   						...
+   						{
+                   test: /\.scss$/,
+                   use: [
+                       "style-loader",
+                       "css-loader",
+                       {
+                           loader: "postcss-loader",
+                           options: {
+                               plugins: [require("postcss-preset-env")()]
+                           }
+                       },
+                       "sass-loader"
+                   ]
+               }
+               ...
+   				]
+   		}
+   }
+   ```
+
+3. 根目录新增 `postcss.config.js`
+
+   ```
+   module.exports = {
+       plugins: {
+           "postcss-preset-env": {}
+       }
+   };
+   ```
+
+4. 根目录新增 `.browserslistrc` （默认支持下列浏览器）
+
+   ```
+   > 0.5%
+   last 2 versions
+   Firefox ESR
+   not dead
+   ```
+
+5. 修改 `src/app.vue`
+
+   ```
+   <style lang="scss">
+   $color: red;
+   h3 {
+       color: $color;
+       transform: translate(100px, 100px);
+   }
+   </style>
+   ```
+
+6. 执行 `npm run build` ，从浏览器查看结果。
+
+   ![](./images/browserslistrc-01.png)
+
+   可以看到：`transform` 自动增加了 `-webkit-`的前缀。
+
+7. 更改 `.browserslistrc`
+
+   ```
+   > 0.01%
+   last 7 versions
+   Firefox ESR
+   not dead
+   ```
+
+8. 再次执行 `npm run build` ，从浏览器查看效果
+
+   ![](./images/browserslistrc-02.png)
+
+   可以看到：`transform` 自动增加了 `-webkit-`，`-o-`，`-moz-` 的前缀。
+
+
+
 ## 2. 注意
 
 1. 新建 `.gitignore` 文件，忽略相关文件或者目录
