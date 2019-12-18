@@ -197,6 +197,39 @@ h3 {
 
 
 
+### 5. CSS预处理器
+
+使用CSS开发，还是刀耕火种的时代。太out了，我们借助于node & 预处理器，对CSS进行编程，让代码飞起来。
+
+此处以 `sass` 为例，如果是 `less`  或者 `stylus`，则下载对应的 `loader`
+
+1. 下载 `sass-loader`： `npm i sass-loader node-sass -D`
+
+2. 修改配置 `config/webpack.config.js`
+
+   ```
+   {
+   		// 注意此处由css改为scss
+   		test: /\.scss$/,
+   		use: ["style-loader", "css-loader", "sass-loader"]
+   }
+   ```
+
+3. 修改 `src/app.vue` ，只修改 `style` 样式
+
+   ```
+   <style lang="scss">
+   $color: red;
+   h3 {
+       color: $color;
+   }
+   </style>
+   ```
+
+4. 执行 `npm run build`，通过浏览器查看效果 `dist/index.html`，跟刚才效果一致。
+
+
+
 ## 2. 注意
 
 1. 新建 `.gitignore` 文件，忽略相关文件或者目录
@@ -216,3 +249,5 @@ h3 {
 2. 为什么将 `node_modules` ， `dist`， `package-lock.json` 加入到 `.gitignore` 中？
 3. `vue-loader` 和 `vue-template-compiler` 有什么作用？
 4. `["style-loader", "css-loader"]` 什么作用，顺序能反吗？
+5. `sass-loader` 和 `node-sass` 作用是什么？
+6. 经常遇到`node-sass` 下载安装失败，有解决方法？
