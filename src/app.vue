@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>{{title}}</h3>
+        <h3>{{title}} - test change v3</h3>
         <img src="./assets/images/baidu.png" alt />
         <img src="./assets/images/pikaqiu.jpg" alt />
         <span class="iconfont icon-bofang"></span>
@@ -21,7 +21,7 @@ export default {
 <style lang="scss">
 @import './assets/fonts/iconfont.css';
 
-$color: red;
+$color: blue;
 h3 {
     color: $color;
     transform: translate(100px, 100px);
