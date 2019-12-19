@@ -428,7 +428,102 @@ h3 {
 
    字体的 `eot` 是2kb，也被转为 `base64` 格式。
 
+### 8. 处理JS兼容性
+
+我们先来确认一个问题！！！
+
+1. 修改 `src/app.vue`
+
+   ```
+   <template>
+       <div>
+           <h3>{{title}}</h3>
+   				...
+       </div>
+   </template>
    
+   <script>
+   export default {
+       name: 'app',
+       data: () => ({
+           title: 'Hello Webpack Demo'
+       })
+   }
+   </script>
+   ```
+
+2. 执行 `npm run build` ，在浏览器查看效果
+
+   ![](./images/chrome.png)
+
+   我的浏览器版本：`Mac`  `Google Chrome 79.0.3945.79`
+
+3. 在其他浏览器 `IE11` 打开看效果
+
+   ![](./images/ie11.png)
+
+   此处报错，页面无任何展示，详细语法报错为：
+
+   ![](./images/ie11-es6-error.png)
+
+   总结：部分浏览器不支持新语法，我们需要将新语法转义为兼容性的代码。
+
+   也可以这么总结：如果浏览器都支持新语法，我们将不需要后面要用到的babel了。
+
+现在我们来解决这个问题
+
+1. 下载 `babel` 
+
+   ```
+   npm i @babel/core @babel/preset-env babel-loader -D
+   npm i @babel/polyfill
+   ```
+
+2. 修改配置 `config/webpack.config.js`
+
+   ```
+   modules.exports = {
+   		...
+   		module: {
+   				rules: [
+   						...
+   						{
+                   test: /\.js$/,
+                   exclude: /node_modules/,
+                   loader: "babel-loader"
+               },
+               ...
+   				]
+   		}
+   }
+   ```
+
+3. 新建 `.babelrc`
+
+   ```
+   {
+       "presets": [
+           [
+               "@babel/preset-env",
+               {
+                   "modules": false,
+                   // corejs的值需与安装的core-js的版本一致
+                   // 可以通过 npm ls core-js 查看core-js的版本号
+                   "corejs": "2.6.11",
+                   "useBuiltIns": "usage"
+               }
+           ]
+       ]
+   }
+   ```
+
+4. 执行 `npm run build` ， 在浏览器查看
+
+   ![](./images/ie9-es6-success.png)
+
+   可以看到，刚才的es6的剪头函数代码被转义为ES5的普通函数，IE9浏览器也可以正常展示。
+
+
 
 ## 2. 注意
 
@@ -452,3 +547,4 @@ h3 {
 5. `sass-loader` 和 `node-sass` 作用是什么？
 6. 经常遇到`node-sass` 下载安装失败，有解决方法？
 7. `url-loader` 和 `file-loader` 的区别？配置中为什么没有 `file-loader` 的配置？
+8. `@babel/core`，`@babel/preset-env`，`babel-loader`，`babel-`

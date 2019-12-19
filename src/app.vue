@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Hello Webpack</h3>
+        <h3>{{title}}</h3>
         <img src="./assets/images/baidu.png" alt />
         <img src="./assets/images/pikaqiu.jpg" alt />
         <span class="iconfont icon-bofang"></span>
@@ -11,7 +11,10 @@
 
 <script>
 export default {
-    name: 'app'
+    name: 'app',
+    data: () => ({
+        title: 'Hello Webpack Demo'
+    })
 }
 </script>
 
