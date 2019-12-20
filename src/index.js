@@ -2,6 +2,8 @@
 import Vue from 'vue';
 import App from './app.vue';
 
+// const str = 'hello str';
+
 // console.log(App);
 new Vue({
     el: '#app',

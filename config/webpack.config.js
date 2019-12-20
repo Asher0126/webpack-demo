@@ -1,5 +1,7 @@
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+// 在webpack.config.js 顶部引入 stylelint-webpack-plugin
+const StyleLintPlugin = require("stylelint-webpack-plugin");
 
 module.exports = {
     entry: './src/index.js',
@@ -18,6 +20,15 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: "babel-loader"
+            },
+            {
+                test: /\.(js|vue)$/,
+                exclude: /node_modules/,
+                enforce: "pre",
+                options: {
+                    formatter: require("eslint-friendly-formatter")
+                },
+                loader: "eslint-loader",
             },
             {
                 test: /\.scss$/,
@@ -79,6 +90,9 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "./public/index.html",
             title: "Hello Webpack"
+        }),
+        new StyleLintPlugin({
+            files: ["src/**/*.{vue,css,scss,sass}"]
         })
     ]
 }

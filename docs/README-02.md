@@ -162,7 +162,140 @@ module.exports = {
 
    我们在开发环境中需要兼顾构建速度，同时需要能映射到源代码查找问题，一般情况能定位到行的话，对于开发者就足够了。所以我们在开发环境中选择使用 eval-source-map。
 
+## 4. 代码检查 - Eslint
 
+1. 修改 `src/index.js`
+
+   ```
+   // console.log('Hello Webpack');
+   import Vue from 'vue'	
+   import App from './app.vue';
+   
+   // 定义变量，但是未使用
+   const str = 'hello str';
+   
+   // console.log(App);
+   new Vue({
+       			el: '#app',
+       render: h => h(App)
+   })
+   ```
+
+   上面的问题
+
+   1. JS语句分号未统一
+   2. 定义 `str` 变量，但是未使用
+   3. 代码格式乱
+
+   在多人项目开发中，如果没有统一的规范，随着代码量的不断增多，会越来越难以维护。所以，需要定义一个团队规范，对代码进行校验，保证代码的基础质量。
+
+   我们使用 `Eslint` 可以解决这个问题。
+
+2. 下载 `eslint` ： `npm install -D eslint eslint-loader eslint-plugin-vue babel-eslint eslint-friendly-formatter`
+
+3. 修改 `config/webpack.config.js`
+
+   ```
+   module.exports = {
+   		module: {
+   				rules: [
+   						{
+                   test: /\.(js|vue)$/,
+                   exclude: /node_modules/,
+                   enforce: "pre",
+                   options: {
+                       formatter: require("eslint-friendly-formatter")
+                     }
+                   loader: "eslint-loader",
+             	}
+   				]
+   		}
+   }
+   ```
+
+4. 新建 `.eslintrc.js`
+
+   ```
+   module.exports = {
+       env: {
+         	browser: true,
+         	node: true,
+         	es6: true
+       },
+       extends: ["eslint:recommended", "plugin:vue/essential"],
+       parserOptions: {
+         	parser: "babel-eslint",
+         	sourceType: "module"
+       },
+       plugins: ["vue"],
+       rules: {}
+   };
+   ```
+
+5. 执行 `npm run dev` 或者 `npm run build`， 会提示错误信息
+
+   ![](../images/eslint-error.png)
+
+
+
+## 5. 代码检查 - stylelint
+
+1. 修改 `src/app.vue`
+
+   ```
+   <style lang="scss">
+   @import './assets/fonts/iconfont.css';
+   
+   $color: blue;
+   h3 {
+       width: 100pt;
+       color: $color;
+       background: #1x1;
+       transform: translate(100px, 100px);
+   }
+   </style>
+   ```
+
+   问题：
+
+   1. 使用pt单位
+   2. 十六进制的颜色值表示错误
+
+   但是，上面的问题，在构建过程中可以正常执行。我们需要一款工具解决css写法错误，或者规范的问题。
+
+2. 下载：`npm install -D stylelint stylelint-webpack-plugin`
+
+3. 修改 `config/webpack.config.js` 
+
+   ```
+   const StyleLintPlugin = require("stylelint-webpack-plugin");
+   
+   module.exports = {
+   		...
+   		plugins: [
+   				new StyleLintPlugin({
+   						files: ['src/**/*.{vue,css,scss,sass}']
+   				})
+   		],
+   		...
+   }
+   ```
+
+4. 新建 `.stylelintrc.js`
+
+   ```
+   module.exports = {
+     rules: {
+       "color-no-invalid-hex": true,
+       "color-hex-case": "lower",
+       "unit-whitelist": ["em", "rem", "%", "s", "px"]
+     }
+   };
+   ```
+
+5. 执行 `npm run dev` 或者 `npm run build` ，报错如下：
+
+   ![](../images/stylelint-error.png)
 
 # 问题
 

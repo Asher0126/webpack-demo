@@ -19,8 +19,8 @@ export default {
         handleClick () {
             console.log('点击了标题');
         }
-    },
-}
+    }
+};
 </script>
 
 <style lang="scss">
@@ -28,7 +28,11 @@ export default {
 
 $color: blue;
 h3 {
+    // width: 100px;
+    width: 100pt;
     color: $color;
+    // background: #1x1;
+    background: #111;
     transform: translate(100px, 100px);
 }
 </style>
