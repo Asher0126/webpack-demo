@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>{{title}} - test change v3</h3>
+        <h3 @click="handleClick">{{title}} - test change v3</h3>
         <img src="./assets/images/baidu.png" alt />
         <img src="./assets/images/pikaqiu.jpg" alt />
         <span class="iconfont icon-bofang"></span>
@@ -14,7 +14,12 @@ export default {
     name: 'app',
     data: () => ({
         title: 'Hello Webpack Demo'
-    })
+    }),
+    methods: {
+        handleClick () {
+            console.log('点击了标题');
+        }
+    },
 }
 </script>
 

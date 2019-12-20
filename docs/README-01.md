@@ -110,7 +110,7 @@ h3 {
 
 原因很简单：目前我们还没有配置解析 `CSS` 的 `loader`。
 
-![](./images/css-loader.png)
+![](../images/css-loader.png)
 
 
 
@@ -193,7 +193,7 @@ h3 {
 
 6. 执行 `npm run build`，此时不需要查看源码，直接将构建之后的 `index.html` 放在浏览器访问
 
-![](./images/hello webpack.png)
+![](../images/hello webpack.png)
 
 
 
@@ -295,7 +295,7 @@ h3 {
 
 6. 执行 `npm run build` ，从浏览器查看结果。
 
-   ![](./images/browserslistrc-01.png)
+   ![](../images/browserslistrc-01.png)
 
    可以看到：`transform` 自动增加了 `-webkit-`的前缀。
 
@@ -310,7 +310,7 @@ h3 {
 
 8. 再次执行 `npm run build` ，从浏览器查看效果
 
-   ![](./images/browserslistrc-02.png)
+   ![](../images/browserslistrc-02.png)
 
    可以看到：`transform` 自动增加了 `-webkit-`，`-o-`，`-moz-` 的前缀。
 
@@ -416,7 +416,7 @@ h3 {
 
 5. 执行 `npm run build` ， 在浏览器查看结果
 
-   ![](./images/url-01.png)
+   ![](../images/url-01.png)
 
    根据 `config/webpack.config.js` 的配置，如果图片大小小于 8092字节，则被 `url-loader` 转为 `base64`编码格式的图片。如果图片大小大于 8092字节，则被 `url-loader` 重命名 `/img/[hash:7].[ext]`。
 
@@ -424,7 +424,7 @@ h3 {
 
    
 
-   ![](./images/url-02.png)
+   ![](../images/url-02.png)
 
    字体的 `eot` 是2kb，也被转为 `base64` 格式。
 
@@ -454,17 +454,17 @@ h3 {
 
 2. 执行 `npm run build` ，在浏览器查看效果
 
-   ![](./images/chrome.png)
+   ![](../images/chrome.png)
 
    我的浏览器版本：`Mac`  `Google Chrome 79.0.3945.79`
 
 3. 在其他浏览器 `IE11` 打开看效果
 
-   ![](./images/ie11.png)
+   ![](../images/ie11.png)
 
    此处报错，页面无任何展示，详细语法报错为：
 
-   ![](./images/ie11-es6-error.png)
+   ![](../images/ie11-es6-error.png)
 
    总结：部分浏览器不支持新语法，我们需要将新语法转义为兼容性的代码。
 
@@ -519,7 +519,7 @@ h3 {
 
 4. 执行 `npm run build` ， 在浏览器查看
 
-   ![](./images/ie9-es6-success.png)
+   ![](../images/ie9-es6-success.png)
 
    可以看到，刚才的es6的剪头函数代码被转义为ES5的普通函数，IE9浏览器也可以正常展示。
 
