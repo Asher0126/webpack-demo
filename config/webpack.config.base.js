@@ -32,20 +32,6 @@ module.exports = {
                 loader: "eslint-loader",
             },
             {
-                test: /\.scss$/,
-                use: [
-                    "style-loader",
-                    "css-loader",
-                    {
-                        loader: "postcss-loader",
-                        options: {
-                            plugins: [require("postcss-preset-env")()]
-                        }
-                    },
-                    "sass-loader"
-                ]
-            },
-            {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
                 use: [
                     {
