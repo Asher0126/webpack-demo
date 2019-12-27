@@ -6,7 +6,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "webpack-dev-server --config config/webpack.config.dev.js",
-        "build": "webpack --config config/webpack.config.prod.js"
+        "build": "webpack --config config/webpack.config.prod.js",
+        "dist": "serve dist"
     },
     "repository": {
         "type": "git",
