@@ -297,6 +297,44 @@ module.exports = {
 
    ![](../images/stylelint-error.png)
 
+
+
+## 6. 拆分Webpack
+
+1. 下载 `webpack-merge` ：`npm i webpack-merge -D`
+
+2. 新建/重命名三个文件
+
+   1. 重命名：`config/webpack.config.js` => `config/webpack.config.base.js`
+
+   2. 新建：`config/webpack.config.dev.js`
+
+      ```
+      const merge = require("webpack-merge");
+      const webpackBaseConfig = require('./webpack.config.base');
+      
+      module.exports = merge(webpackBaseConfig, {
+          mode: 'development'
+      });
+      ```
+
+      
+
+   3. 新建：`config/webpack.config.prod.js`
+
+      ```
+      const merge = require("webpack-merge");
+      const webpackBaseConfig = require('./webpack.config.base');
+      
+      module.exports = merge(webpackBaseConfig, {
+          mode: 'production'
+      });
+      ```
+
+      
+
+
+
 # 问题
 
 1. 模块热替换是这么实现的，所有在webpack中开发的代码，都可以实现热替换吗？

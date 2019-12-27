@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const StyleLintPlugin = require("stylelint-webpack-plugin");
 
 module.exports = {
+    // 单入口
     entry: './src/index.js',
     devtool: 'source-map',
     devServer: {
@@ -95,4 +96,4 @@ module.exports = {
             files: ["src/**/*.{vue,css,scss,sass}"]
         })
     ]
-}
+};
