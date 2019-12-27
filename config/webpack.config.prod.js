@@ -4,6 +4,25 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = merge(webpackBaseConfig, {
+    /**
+     * 当前打包的构建环境
+     * production：
+     *      FlagDependencyUsagePlugin, 
+     *      FlagIncludedChunksPlugin, 
+     *      ModuleConcatenationPlugin,  
+     *             减少大量的闭包，scope hoisting
+     *              必须是es6语法
+     *          手动引入
+     *              const webpack = require('webpack');
+     *              new webpack.ModuleConcatenationPlugin()
+     *      NoEmitOnErrorsPlugin, 
+     *      OccurrenceOrderPlugin, 
+     *      SideEffectsFlagPlugin
+     *      UglifyJsPlugin
+     * development：默认开启 NamedChunksPlugin nameModulesPlugin
+     *      在HMR阶段，控制台打印模块发生了热更新，展示模块路径
+     * none
+     */
     mode: 'production',
     module: {
         rules: [
