@@ -331,9 +331,48 @@ module.exports = {
       });
       ```
 
+## 7. 清空构建目录
+
+   `dist` 目录每次构建都会生成新的文件（j s,css,images），每次生成的hash值不一样，这样会有很多垃圾文件，则需要清除
+
+   1. `npm i clean-webpack-plugin`
+
+   2. 修改 `config/webpack.config.prod.js`
+
+      ```
+      const { CleanWebpackPlugin } = require('clean-webpack-plugin');
       
+      module.exports = merge(webpackBaseConfig, {
+          mode: 'production',
+          plugins: [
+              // 清理 dist 目录
+              new CleanWebpackPlugin({
+                  filename: './dist'
+              })
+          ]
+      });
+      ```
+
+   3. 再执行 `npm run build` ，看到每次执行之后，dist先被清空，再有新文件生成。
 
 
+
+## 8. 通过域访问构建完成的项目
+
+1. `npm i serve -g`
+
+2. 修改 `package.json`
+
+   ```
+   "scripts": {
+       "test": "echo \"Error: no test specified\" && exit 1",
+       "dev": "webpack-dev-server --config config/webpack.config.dev.js",
+       "build": "webpack --config config/webpack.config.prod.js",
+       "dist": "serve dist"
+   },
+   ```
+
+3. 执行：`npm run dist` ， 默认端口：`5000` ， 通过 `localhost:5000` 可以访问构建效果
 
 # 问题
 
