@@ -2,6 +2,7 @@ const merge = require("webpack-merge");
 const webpackBaseConfig = require('./webpack.config.base');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const utils = require('./libs/utils');
 
 module.exports = merge(webpackBaseConfig, {
     /**
@@ -11,7 +12,7 @@ module.exports = merge(webpackBaseConfig, {
      *      FlagIncludedChunksPlugin, 
      *      ModuleConcatenationPlugin,  
      *             减少大量的闭包，scope hoisting
-     *              必须是es6语法
+     *             必须是es6语法
      *          手动引入
      *              const webpack = require('webpack');
      *              new webpack.ModuleConcatenationPlugin()
@@ -45,7 +46,8 @@ module.exports = merge(webpackBaseConfig, {
     plugins: [
         // 清理 dist 目录
         new CleanWebpackPlugin({
-            filename: './dist'
+            // filename: './dist'
+            filename: utils.getCommandPath('dist')
         }),
         //提取 css
         new MiniCssExtractPlugin({

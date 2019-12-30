@@ -2,6 +2,7 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 // 在webpack.config.js 顶部引入 stylelint-webpack-plugin
 const StyleLintPlugin = require("stylelint-webpack-plugin");
+const utils = require('./libs/utils');
 
 module.exports = {
     /**
@@ -16,20 +17,30 @@ module.exports = {
      *      key: value 
      * }
      */
-    entry: './src/index.js',
+    entry: utils.getCommandPath('src/index'),
     /**
      * 功能：打包输出
      * filename: '[name].js'
      * 
      */
     output: {
-        // path: './dist',
-        // filename: '[name].js'
+        // 构建输出目录
+        path: utils.getCommandPath('dist'),
+        // 页面CDN地址
+        // publicPath: '',
+        filename: 'js/[name].js'
+    },
+    resolve: {
+        modules: [
+            utils.getCommandPath('node_modules')
+        ]
     },
     devtool: 'source-map',
+    // 避免构建出现 Entrypoint undefined = index.html（临时解决问题）
+    stats: { children: false },
     devServer: {
         hot: true,
-        contentBase: './dist'
+        contentBase: utils.getCommandPath('dist')
     },
     module: {
         /**
@@ -153,7 +164,8 @@ module.exports = {
     plugins: [
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
-            template: "./public/index.html",
+            // template: "./public/index.html",
+            template: utils.getCommandPath('public/index.html'),
             title: "Hello Webpack"
         }),
         new StyleLintPlugin({
