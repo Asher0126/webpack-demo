@@ -1,8 +1,62 @@
+const path = require('path');
+const glob = require('glob');
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 // 在webpack.config.js 顶部引入 stylelint-webpack-plugin
 const StyleLintPlugin = require("stylelint-webpack-plugin");
 const utils = require('./libs/utils');
+
+/**
+ * 多入口方案实现原理：
+ * 1. 在src目录下，创建多个目录
+ *      创建index.js: 入口文件
+ *      创建index.html: 模版文件
+ * 2. 获取src下所有的入口文件：通过glob库完成
+ *      迭代入口文件做的事情：
+ *      1. 获取所有的入口 index.js
+ *      2. 获取所有的模版 index.html,并通过 htmlWebpackPlugin 处理，组成 htmlWebpackPlugins，最后拼接到plugins中
+ */
+const setMPA = () => {
+    const entry = {};
+    const htmlWebpackPlugins = [];
+    // 在src下获取所有的入口文件
+    const entryFiles = glob.sync(path.join(utils.getCommandPath(), 'src/*/index.js'));
+
+    // 遍历所有的入口文件
+    Object.keys(entryFiles).map((index) => {
+        const entryFile = entryFiles[index];
+
+        const match = entryFile.match(/src\/(.*)\/index\.js/);
+        const pageName = match && match[1];
+
+        // 获取所有的入口文件
+        entry[pageName] = entryFile;
+        // 获取每个入口文件对应的html模版
+        htmlWebpackPlugins.push(
+            new HtmlWebpackPlugin({
+                template: path.join(utils.getCommandPath(), `src/${pageName}/index.html`),
+                filename: `${pageName}.html`,
+                chunks: [pageName],
+                inject: true,
+                minify: {
+                    html5: true,
+                    collapseWhitespace: true,
+                    preserveLineBreaks: false,
+                    minifyCSS: true,
+                    minifyJS: true,
+                    removeComments: false
+                }
+            })
+        );
+    });
+
+    return {
+        entry,
+        htmlWebpackPlugins
+    }
+}
+
+const { entry, htmlWebpackPlugins } = setMPA();
 
 module.exports = {
     /**
@@ -17,7 +71,8 @@ module.exports = {
      *      key: value 
      * }
      */
-    entry: utils.getCommandPath('src/index'),
+    // entry: utils.getCommandPath('src/index'),
+    entry,
     /**
      * 功能：打包输出
      * filename: '[name].js'
@@ -163,15 +218,15 @@ module.exports = {
      */
     plugins: [
         new VueLoaderPlugin(),
-        new HtmlWebpackPlugin({
-            // template: "./public/index.html",
-            template: utils.getCommandPath('public/index.html'),
-            title: "Hello Webpack"
-        }),
+        // new HtmlWebpackPlugin({
+        //     // template: "./public/index.html",
+        //     template: utils.getCommandPath('public/index.html'),
+        //     title: "Hello Webpack"
+        // }),
         new StyleLintPlugin({
             files: ["src/**/*.{vue,css,scss,sass}"]
         })
-    ]
+    ].concat(htmlWebpackPlugins)
 };
 
 /**
