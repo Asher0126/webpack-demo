@@ -3,7 +3,7 @@
         [
             "@babel/preset-env",
             {
-                "modules": false,
+                // "modules": false,
                 // "targets": {
                 //     "browsers": [
                 //         "> 1%",
@@ -13,7 +13,7 @@
                 // },
                 // corejs的值需与安装的core-js的版本一致
                 // 可以通过 npm ls core-js 查看core-js的版本号
-                "corejs": "2.6.11",
+                "corejs": "3.6.1",
                 "useBuiltIns": "usage"
             }
         ]
