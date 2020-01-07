@@ -4,6 +4,7 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 // 在webpack.config.js 顶部引入 stylelint-webpack-plugin
 const StyleLintPlugin = require("stylelint-webpack-plugin");
+const SpritesmithPlugin = require("webpack-spritesmith");
 const utils = require('./libs/utils');
 
 /**
@@ -86,8 +87,16 @@ module.exports = {
         filename: 'js/[name].js'
     },
     resolve: {
+        // resolve.modules: 通知webpack解析模块时应该搜索的目录
+        // 绝对路径：在给定目录中搜索，不会向上查找
+        // 相对路径：类似于node_modules中的方式向上查找
+
+        // 假如我们在 app.vue 中引用了一个模块，
+        // Webpack 会从 app.vue 所在的 src 目录依次查找 
+        // ./src/node_modules => ./node_modules => ./src/assets/generated => ./assets/generated
         modules: [
-            utils.getCommandPath('node_modules')
+            utils.getCommandPath('node_modules'),
+            "assets/generated"
         ]
     },
     devtool: 'source-map',
@@ -225,6 +234,27 @@ module.exports = {
         // }),
         new StyleLintPlugin({
             files: ["src/**/*.{vue,css,scss,sass}"]
+        }),
+        new SpritesmithPlugin({
+            // 指定那些图片需要合并成雪碧图
+            src: {
+                // 原始图片所在目录
+                cwd: path.resolve(__dirname, '..', "src/assets/sprites"),
+                // glob：匹配规则，符合匹配规则的图片才需要合并
+                glob: "*.png"
+            },
+            // 合成图片输出位置
+            target: {
+                // 输出位置
+                image: path.resolve(__dirname, '..', "src/assets/generated/sprite.png"),
+                // 输出的css文件存放位置
+                css: path.resolve(__dirname, '..', "src/assets/generated/sprite.scss")
+            },
+            apiOptions: {
+                // css文件使用该路径作为背景图
+                // ~ 是 Webpack 中约定俗成的一个符号，表示从 resolve.modules 中指定的路径。假如在 app.vue 中 import img from '~sprite.png', 那么最终经过上面讲述的查找过程后，实际的路径是 ./src/assets/generated/sprite.png。因此 ~ 与 resolve.modules 的配置有直接的关系
+                cssImageRef: "~sprite.png"
+            }
         })
     ].concat(htmlWebpackPlugins)
 };

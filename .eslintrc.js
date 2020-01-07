@@ -17,5 +17,8 @@ module.exports = {
         "camelcase": 0, // 不强制_形式，或者驼峰
 
         "vue/html-indent": ["error", 4], // vue中4个空格
+        "vue/max-attributes-per-line": 0,
+        "vue/singleline-html-element-content-newline": 0,
+        "vue/html-self-closing": 0
     }
 };
