@@ -11,22 +11,4 @@ module.exports = merge(webpackBaseConfig, {
     // eval-source-map：映射到原始源代码，只映射到行。（开发环境）
     */
     devtool: 'eval-source-map',
-    module: {
-        rules: [
-            {
-                test: /\.scss$/,
-                use: [
-                    "style-loader",
-                    "css-loader",
-                    {
-                        loader: "postcss-loader",
-                        options: {
-                            plugins: [require("postcss-preset-env")()]
-                        }
-                    },
-                    "sass-loader"
-                ]
-            },
-        ]
-    }
 });

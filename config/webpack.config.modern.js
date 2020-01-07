@@ -34,20 +34,6 @@ const baseConf = {
     mode: 'production',
     module: {
         rules: [
-            {
-                test: /\.scss$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    "sass-loader",
-                    {
-                        loader: "postcss-loader",
-                        options: {
-                            plugins: [require("postcss-preset-env")()]
-                        }
-                    }
-                ]
-            }
         ]
     },
     plugins: [

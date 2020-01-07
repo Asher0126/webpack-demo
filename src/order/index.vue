@@ -19,7 +19,7 @@ export default {
 @import '~sprite2.scss';
 
 li {
-    width: 256px;
-    height: 256px;
+    width: 256px; /* no */
+    height: 256px;/* no */
 }
 </style>

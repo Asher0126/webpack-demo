@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 // 在webpack.config.js 顶部引入 stylelint-webpack-plugin
 const StyleLintPlugin = require("stylelint-webpack-plugin");
 const SpritesmithPlugin = require("webpack-spritesmith");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const utils = require('./libs/utils');
 
@@ -230,6 +231,27 @@ module.exports = {
                         }
                     }
                 ]
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    // {
+                    //     loader: 'px2rem-loader',
+                    //     options: {
+                    //         remUnit: 75,
+                    //         remPrecision: 8
+                    //     }
+                    // },
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            plugins: [require("postcss-preset-env")()]
+                        }
+                    },
+                    "sass-loader"
+                ]
             }
         ]
     },
@@ -269,6 +291,12 @@ module.exports = {
         new HardSourceWebpackPlugin(),
         new StyleLintPlugin({
             files: ["src/**/*.{vue,css,scss,sass}"]
+        }),
+        //提取 css
+        new MiniCssExtractPlugin({
+            // 类似 webpackOptions.output里面的配置
+            filename: "css/[name].[chunkhash:8].css",
+            chunkFilename: "css/[id].css"
         }),
         new SpritesmithPlugin({
             // 指定那些图片需要合并成雪碧图
