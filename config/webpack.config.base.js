@@ -57,7 +57,7 @@ const setMPA = () => {
             new HtmlWebpackPlugin({
                 template: path.join(utils.getCommandPath(), `src/${pageName}/index.html`),
                 filename: `${pageName}.html`,   // 独立输出每个页面
-                chunks: [pageName, 'vconsole'], // 每个页面注入的chunk, vconsole是手动注入的，确认下是否有自动注入的方法
+                chunks: [pageName, 'vconsole', 'vendors'], // 每个页面注入的chunk, vconsole是手动注入的，确认下是否有自动注入的方法
                 inject: true,
                 minify: {   // 压缩html,css,js，移除注释，空格空行
                     html5: true,

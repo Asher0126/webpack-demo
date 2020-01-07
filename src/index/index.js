@@ -1,4 +1,4 @@
-console.log('Hello Index');
+console.log('Hello Index v1');
 
 // console.log('Hello Webpack');
 import Vue from 'vue';

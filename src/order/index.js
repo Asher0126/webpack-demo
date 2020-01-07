@@ -1,4 +1,4 @@
-console.log('Hello Order');
+console.log('Hello Order v1');
 
 // console.log('Hello Webpack');
 import Vue from 'vue';

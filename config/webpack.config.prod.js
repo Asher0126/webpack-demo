@@ -27,7 +27,7 @@ module.exports = merge(webpackBaseConfig, {
     mode: 'production',
     module: {
         rules: [
-            
+
         ]
     },
     plugins: [
@@ -36,7 +36,50 @@ module.exports = merge(webpackBaseConfig, {
             // filename: './dist'
             filename: utils.getCommandPath('dist')
         }),
-        
+
         new DebugPlugin({ enable: true })
-    ]
+    ],
+    optimization: {
+        /**
+         * webpack v4中，使用 optimization.SplitChunksPlugin 替代了 CommonsChunkPlugin
+         * webpack默认配置
+         * 1. chunk或者来自node_modules的模块可以被共享
+         * 2. 在被压缩，gz之前，chunk超过30kb
+         * 3. 加载chunk最大请求 <= 6
+         * 4. 首评加载的最大请求数 <= 4
+         * 
+         * 每个参数含义：
+         * automaticNameDelimiter: 自定义的name和chunk之间的连接符号（默认是~）
+         * automaticNameMaxLength: chunk的name字符串的最大长度（默认是109）
+         * chunks：function(chunk)｜string
+         *     all：chunks可以在同步和异步chunk中共享
+         *     async：只能异步
+         *     initial：
+         * maxAsyncRequests：按需加载的时候的同时最大请求数
+         * minChunks：拆分前最小的分享数
+         * minSize：单位字节，生成chunk的最小值
+         * minRemainingSize：webpack v5预留
+         * maxAsyncSize：
+         * maxInitialSize：
+         * name
+         * automaticNamePrefix
+         * cacheGroups
+         *      priority：
+         *      reuseExistingChunk
+         *      type
+         *      test
+         *      filename
+         *      enforce
+         *      idHint
+         */
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
+    }
 });
