@@ -5,7 +5,26 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 // 在webpack.config.js 顶部引入 stylelint-webpack-plugin
 const StyleLintPlugin = require("stylelint-webpack-plugin");
 const SpritesmithPlugin = require("webpack-spritesmith");
+const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const utils = require('./libs/utils');
+
+/**
+ * 启用缓存几种方法：
+ * 1. cache：
+ * 2. HardSourceWebpackPlugin
+ * 3. cache-loader: 注意，cache-loader读取和写入文件也比较耗时
+ * 4. babel-loader的cacheDirectory
+ * 
+ * 多线程：
+ * 通过多线程并行执行。
+ * 比较有代表性的工具是 HappyPack 和 Webpack 的 thread-loader。
+ * 两者的功能相似
+ *     HappyPack 需要同时配置 plugin 和 loader
+ *     后者 thread-loader 只需要在 loader 中进行配置就行，而且也是 Webpack 官方维护的工具，所以我们采用 thread-loader。
+ *
+ * 两个线程之间通信的成本很高，所以我们需要权衡到底是不是真的每个 loader 都启用多线程。
+ *     babel-loader 需要转译大量的 js，比较耗费时间，这里我们先选择给它启用多线程。
+ */
 
 /**
  * 多入口方案实现原理：
@@ -60,6 +79,9 @@ const setMPA = () => {
 const { entry, htmlWebpackPlugins } = setMPA();
 
 module.exports = {
+    // 开启 cache 的情况下，Webpack 会缓存模块和生产的 chunk，下次构建的时候如果内容没有发生变化可以直接复用缓存的内容，改善编译性能。
+    // 增量构建速度提升明显，冷启动影响不大
+    cache: true,
     /**
      * 功能：打包输入
      * 将所有代码，图片，字体资源都会被依赖，webpack将依赖加入到依赖关系图中，最后生成打包页面
@@ -149,7 +171,17 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                loader: "babel-loader"
+                use: [
+                    // 在babel-loader之前添加thread-loader。
+                    { loader: "thread-loader" },
+                    {
+                        loader: "babel-loader",
+                        options: {
+                            // 启用缓存
+                            cacheDirectory: true
+                        }
+                    }
+                ]
             },
             {
                 test: /\.(js|vue)$/,
@@ -232,6 +264,9 @@ module.exports = {
         //     template: utils.getCommandPath('public/index.html'),
         //     title: "Hello Webpack"
         // }),
+        // Webpack 内部没有缓存编译过程中的中间结果。如果能将 Webpack 编译过程中的中间结果缓存起来，那么下次再进行编译的时候就可以提高编译的速度。HardSourceWebpackPlugin 就是用来解决这个问题的。
+        // 冷启动提升明显，但是热替换速度反而下降
+        new HardSourceWebpackPlugin(),
         new StyleLintPlugin({
             files: ["src/**/*.{vue,css,scss,sass}"]
         }),
