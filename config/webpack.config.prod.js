@@ -2,6 +2,7 @@ const merge = require("webpack-merge");
 const webpackBaseConfig = require('./webpack.config.base');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const DebugPlugin = require("./plugins/DebugPlugin");
 const utils = require('./libs/utils');
 
 module.exports = merge(webpackBaseConfig, {
@@ -54,6 +55,7 @@ module.exports = merge(webpackBaseConfig, {
             // 类似 webpackOptions.output里面的配置
             filename: "css/[name].[chunkhash:8].css",
             chunkFilename: "css/[id].css"
-        })
+        }),
+        new DebugPlugin({ enable: true })
     ]
 });

@@ -7,7 +7,8 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "webpack-dev-server --config config/webpack.config.dev.js",
         "build": "webpack --config config/webpack.config.prod.js",
-        "build:modern": "node config/webpack.config.modern.js",
+        "build:common": "node config/webpack.config.modern.js",
+        "build:modern": "node config/webpack.config.modern.js -- --modern",
         "dist": "serve dist"
     },
     "repository": {
@@ -54,6 +55,7 @@
     "dependencies": {
         "@babel/polyfill": "^7.7.0",
         "core-js": "^3.6.1",
+        "vconsole": "^3.3.4",
         "vue": "^2.6.11"
     }
 }
