@@ -168,7 +168,7 @@ module.exports = {
                         options: {
                             esModule: false,
                             limit: 8092,
-                            name: "img/[hash:7].[ext]"
+                            name: "/img/[hash:7].[ext]"
                         }
                     }
                 ]
@@ -181,7 +181,7 @@ module.exports = {
                         options: {
                             esModule: false,
                             limit: 8092,
-                            name: "media/[hash:7].[ext]"
+                            name: "/media/[hash:7].[ext]"
                         }
                     }
                 ]
@@ -194,7 +194,7 @@ module.exports = {
                         options: {
                             esModule: false,
                             limit: 8092,
-                            name: "font/[hash:7].[ext]"
+                            name: "/font/[hash:7].[ext]"
                         }
                     }
                 ]
@@ -243,12 +243,25 @@ module.exports = {
                 // glob：匹配规则，符合匹配规则的图片才需要合并
                 glob: "*.png"
             },
+            customTemplates: {
+                function_based_template: utils.templateFunction
+            },
             // 合成图片输出位置
             target: {
                 // 输出位置
                 image: path.resolve(__dirname, '..', "src/assets/generated/sprite.png"),
-                // 输出的css文件存放位置
-                css: path.resolve(__dirname, '..', "src/assets/generated/sprite.scss")
+                // 1倍图配置：输出的css文件存放位置
+                // css: path.resolve(__dirname, '..', "src/assets/generated/sprite.scss")
+                // 2倍图配置
+                css: [
+                    [
+                        path.resolve(__dirname, '..', "src/assets/generated/sprite2.scss"),
+                        {
+                            format: "function_based_template"
+                        }
+                    ],
+                    path.resolve(__dirname, '..', "src/assets/generated/sprite.scss")
+                ]
             },
             apiOptions: {
                 // css文件使用该路径作为背景图
