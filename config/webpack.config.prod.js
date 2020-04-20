@@ -3,6 +3,7 @@ const webpackBaseConfig = require('./webpack.config.base');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const DebugPlugin = require("./plugins/DebugPlugin");
 const utils = require('./libs/utils');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = merge(webpackBaseConfig, {
     /**
@@ -37,7 +38,10 @@ module.exports = merge(webpackBaseConfig, {
             filename: utils.getCommandPath('dist')
         }),
 
-        new DebugPlugin({ enable: true })
+        new DebugPlugin({ enable: true }),
+
+        new BundleAnalyzerPlugin()
+
     ],
     optimization: {
         /**
@@ -75,8 +79,16 @@ module.exports = merge(webpackBaseConfig, {
         splitChunks: {
             cacheGroups: {
                 commons: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
+                    chunks: "initial",
+                    minChunks: 2,
+                    name: "commons",
+                    maxInitialRequests: 5,
+                    minSize: 0, // 默认是30kb，minSize设置为0之后
+                    // 多次引用的utility1.js和utility2.js会被压缩到commons中
+                },
+                moment: {
+                    test: /moment/,
+                    name: 'moment',
                     chunks: 'all'
                 }
             }

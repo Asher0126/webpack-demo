@@ -7,12 +7,18 @@
             <li class="ico-l3" />
             <li class="ico-l4" />
         </ul>
+        <h3>{{ time }}</h3>
     </div>
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
-    name: 'Index'
+    name: 'Index',
+    data: () => ({
+        time: moment().format('YYYY-MM-DD HH:mm:ss')
+    })
 };
 </script>
 
