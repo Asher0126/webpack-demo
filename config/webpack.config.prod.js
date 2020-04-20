@@ -90,6 +90,11 @@ module.exports = merge(webpackBaseConfig, {
                     test: /moment/,
                     name: 'moment',
                     chunks: 'all'
+                },
+                quill222: {
+                    test: /vue-quill-editor/,
+                    name: 'quill222',
+                    chunks: 'all'
                 }
             }
         }

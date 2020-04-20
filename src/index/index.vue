@@ -8,17 +8,44 @@
             <li class="ico-l4" />
         </ul>
         <h3>{{ time }}</h3>
+
+        <quill-editor
+            ref="myQuillEditor"
+            v-model="content"
+            :options="editorOption"
+            @blur="onEditorBlur($event)"
+            @focus="onEditorFocus($event)"
+            @ready="onEditorReady($event)"
+        />
     </div>
 </template>
 
 <script>
 import moment from 'moment';
+import { quillEditor } from 'vue-quill-editor';
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
 
 export default {
     name: 'Index',
+    components: { quillEditor },
     data: () => ({
-        time: moment().format('YYYY-MM-DD HH:mm:ss')
-    })
+        time: moment().format('YYYY-MM-DD HH:mm:ss'),
+        content: 'hello world',
+        editorOption: {}
+    }),
+    methods: {
+        onEditorBlur (e) {
+            console.log("onEditorBlur -> e", e);
+        },
+        onEditorFocus (e) {
+            console.log("onEditorFocus -> e", e);
+        },
+        onEditorReady (e) {
+            console.log("onEditorReady -> e", e);
+        }
+    },
 };
 </script>
 
