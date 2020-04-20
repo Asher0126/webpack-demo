@@ -86,14 +86,19 @@ module.exports = merge(webpackBaseConfig, {
                     minSize: 0, // 默认是30kb，minSize设置为0之后
                     // 多次引用的utility1.js和utility2.js会被压缩到commons中
                 },
+                swiper: {
+                    test: /swiper/,
+                    name: 'swiper',
+                    chunks: 'all'
+                },
                 moment: {
                     test: /moment/,
                     name: 'moment',
                     chunks: 'all'
                 },
-                quill222: {
-                    test: /vue-quill-editor/,
-                    name: 'quill222',
+                quill: {
+                    test: /quill/,
+                    name: 'quill',
                     chunks: 'all'
                 }
             }
